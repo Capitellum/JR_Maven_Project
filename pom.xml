@@ -13,11 +13,19 @@
         <maven.compiler.target>18</maven.compiler.target>
     </properties>
 
-    <dependencies>
-
-    </dependencies>
-
     <build>
+        <!-- Files -->
+        <resources>
+            <resource>
+                <targetPath>lib/</targetPath>
+                <directory>${basedir}/target/dependency/</directory>
+                <includes>
+                    <include>**/*.jar</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <!-- Plugins -->
         <plugins>
             <!-- Usual compilation -->
             <plugin>
@@ -26,6 +34,75 @@
                 <version>3.10.1</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.6.1</version>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.apache.commons</groupId>
+                                    <artifactId>commons-lang3</artifactId>
+                                    <version>3.12.0</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.openjfx</groupId>
+                                    <artifactId>javafx-controls</artifactId>
+                                    <version>18.0.1</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>com.javarush</groupId>
+                                    <artifactId>desktop-game-engine</artifactId>
+                                    <version>1.0</version>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.junit.jupiter</groupId>
+                                    <artifactId>junit-jupiter-engine</artifactId>
+                                    <version>5.8.2</version>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Manifest configuration -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader</mainClass>
+                        </manifest>
+                        <manifestEntries>
+                            <Rsrc-Main-Class>com.javarush.games.racer.RacerGame</Rsrc-Main-Class>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <!-- Test configuration -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.1.2</version>
+                <configuration>
+                    <excludes>
+                        <exclude>StrangeTest.java</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
 
@@ -39,6 +116,37 @@
                 </configuration>
             </plugin>
         </plugins>
+
     </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.12.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>18.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.javarush</groupId>
+            <artifactId>desktop-game-engine</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.8.2</version>
+        </dependency>
+
+
+    </dependencies>
+
+
 
 </project>
